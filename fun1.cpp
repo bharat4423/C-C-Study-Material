@@ -1,34 +1,51 @@
 #include <iostream>
- using namespace std;
+using namespace std;
 
- class Base{
-	 public:
-		 virtual void fun(){cout<<"Base::fun()"<<endl;}
- };
+void fun();
+void funOne();
+void funTwo();
 
-class Derived:public Base{
-	public:
-		void fun(){cout<<"Derived::fun()"<<endl;}
+void funCaller(void (*)()); //function taking pointer to function as args...
 
-};
-
-void funCaller(Base *bPtr){ //using Base class pointer
-	bPtr->fun();
-}
 int main(){
-	Base bobj;
-	Derived dobj;
-
-	funCaller(&bobj);
-	funCaller(&dobj);
+	funCaller(fun);
+	funCaller(funOne);
+	funCaller(funTwo);
 }
 
+void fun(){
+	cout<<"fun() Called..."<<endl;
+}
+void funOne(){
+	cout<<"funOne() called..."<<endl;
+}
+void funTwo(){
+	cout<<"funTwo() called.."<<endl;
+}
 
-/* OutPut -->
+void funCaller(void (*fptr)()){
+		cout<<"funCaller() started..."<<endl;
+		fptr();
+		cout<<"funCaller() Finished.."<<endl;
+
+		cout<<"**************************"<<endl;
+		}
+/*
+ * Output --->
  *
- * corporate@ACTS23:~/cpp/day9> g++ fun1.cpp
-corporate@ACTS23:~/cpp/day9> ./a.out
-Base::fun()
-Derived::fun()
-
+ * corporate@ACTS23:~/cpp/day6> vi fun1.cpp
+corporate@ACTS23:~/cpp/day6> g++ fun1.cpp
+corporate@ACTS23:~/cpp/day6> ./a.out
+funCaller() started...
+fun() Called...
+funCaller() Finished..
+**************************
+funCaller() started...
+funOne() called...
+funCaller() Finished..
+**************************
+funCaller() started...
+funTwo() called..
+funCaller() Finished..
+**************************
 */
